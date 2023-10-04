@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Turn_based_combat_game
 {
-    internal class Equipted
+    internal class Equipped
     {
     }
 }
