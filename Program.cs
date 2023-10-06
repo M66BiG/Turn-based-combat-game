@@ -3,6 +3,10 @@
 internal class Program
 {
 
+    //----------------
+    // Main
+    //----------------
+
     private static void Main(string[] args)
     {
         Human Spieler = new Human();
@@ -11,6 +15,10 @@ internal class Program
         ShowNavigation();
 
     }
+
+    //----------------
+    // Menü Navigation
+    //----------------
 
     public static void ShowNavigation()
     {
@@ -22,6 +30,9 @@ internal class Program
         Navigation(Convert.ToInt32(Console.ReadLine()));
     }
 
+    //--------------------------------
+    // Navigations Aktionen
+    //--------------------------------
 
     public static void Navigation (int Navigator)
     {
@@ -41,11 +52,18 @@ internal class Program
         }
     }
 
+
+    //----------------
+    // Shop anzeigen
+    //----------------
+
     public static void ShowShopList(Dictionary<string, IItem> Stuff)
     {
+        
         int counter = 1;
         Human Spieler = new Human();
-        Dictionary<int, string> temp = new Dictionary<int, string>();
+        Console.WriteLine(Spieler.Gold); //Überprüfen weshalb Gold neu geschrieben wird.
+        Dictionary<int, string> temp = new Dictionary<int, string>(); // Um Key zu storen mit der jeweilige zahl angabe um es später dem Inventar hinzuzufügen
 
         foreach (var item in Stuff)
         {
@@ -57,17 +75,41 @@ internal class Program
         
         Console.WriteLine($"{counter}: Verlassen");
 
-        ShopAction(Convert.ToInt32(Console.ReadLine), counter);
+
+        // Hierunter wird gecheckt ob genug Gold vorhanden ist.
+
+
+        int input = ShopAction(Convert.ToInt32(Console.ReadLine()), counter);
+
+        if (input != 0)
+        {
+            if (Spieler.Gold >= Stuff[temp[input]].Cost )
+            {
+                Console.WriteLine("Du hast genug Gold");
+                Spieler.Gold -= Stuff[temp[input]].Cost;
+                Console.WriteLine(Spieler.Gold);
+                ShowNavigation();
+            }
+        }
 
     }
 
+    //----------------
+    // Shop Verlassen?
+    //----------------
+
     public static int ShopAction(int input, int counter)
     {
-        switch (input)
+        if (input == counter)
         {
-
+            ShowNavigation();
+            return 0;
         }
-        return 0;
+        else
+        {
+            return input;
+        }
+
     }
 
 
