@@ -8,5 +8,6 @@ namespace Turn_based_combat_game
 {
     internal class Equipped
     {
+        public List<string> Equipt { get; set; }
     }
 }

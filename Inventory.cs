@@ -8,5 +8,7 @@ namespace Turn_based_combat_game
 {
     internal class Inventory
     {
+        public List<string> Inv { get; set; }
+
     }
 }
