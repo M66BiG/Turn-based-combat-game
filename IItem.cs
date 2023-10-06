@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Turn_based_combat_game
 {
-    public class Item
+    public class IItem
     {
         public int Cost {  get; set; }
         public int Damage { get; set; }

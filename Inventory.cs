@@ -10,5 +10,7 @@ namespace Turn_based_combat_game
     {
         public List<string> Inv { get; set; }
 
+        public int Gold { get; set; } = 100;
+
     }
 }

@@ -5,7 +5,9 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        
+        Human Spieler = new Human();
+        Inventory SpielerInventar = new Inventory();
+
         ShowNavigation();
 
     }
@@ -19,9 +21,12 @@ internal class Program
 
         Navigation(Convert.ToInt32(Console.ReadLine()));
     }
+
+
     public static void Navigation (int Navigator)
     {
         ItemStats itemStats = new ItemStats();
+
         switch (Navigator)
         {
             case 2:
@@ -36,20 +41,34 @@ internal class Program
         }
     }
 
-    public static void ShowShopList(Dictionary<string, Item> Stuff)
+    public static void ShowShopList(Dictionary<string, IItem> Stuff)
     {
         int counter = 1;
-
-        Dictionary<int, object> temp = new Dictionary<int, object>();
+        Human Spieler = new Human();
+        Dictionary<int, string> temp = new Dictionary<int, string>();
 
         foreach (var item in Stuff)
         {
             
             Console.WriteLine($"{counter}: {item.Key}: \t Kosten: {item.Value.Cost} \t Schaden: {item.Value.Damage} \t Armor: {item.Value.Armor} \t Slot: {item.Value.Slot}");
-            temp.Add(counter++, item);
+            temp.Add(counter++, item.Key);
         }
 
         
+        Console.WriteLine($"{counter}: Verlassen");
+
+        ShopAction(Convert.ToInt32(Console.ReadLine), counter);
+
     }
-    
+
+    public static int ShopAction(int input, int counter)
+    {
+        switch (input)
+        {
+
+        }
+        return 0;
+    }
+
+
 }
