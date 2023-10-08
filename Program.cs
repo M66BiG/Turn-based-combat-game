@@ -10,9 +10,8 @@ internal class Program
     private static void Main(string[] args)
     {
         Human Spieler = new Human();
-        Inventory SpielerInventar = new Inventory();
-
-        ShowNavigation();
+        // Inventory SpielerInventar = new Inventory();
+        ShowNavigation(Spieler);
 
     }
 
@@ -20,34 +19,32 @@ internal class Program
     // Menü Navigation
     //----------------
 
-    public static void ShowNavigation()
+    public static void ShowNavigation(Human Spieler)
     {
         Console.WriteLine("Du befindest dich im Hauptmenü");
         Console.WriteLine("1: zum Haus");
         Console.WriteLine("2: zum Shop");
         Console.WriteLine("3: zum Inventar");
 
-        Navigation(Convert.ToInt32(Console.ReadLine()));
+        Navigation(Convert.ToInt32(Console.ReadLine()),Spieler);
     }
 
     //--------------------------------
     // Navigations Aktionen
     //--------------------------------
 
-    public static void Navigation (int Navigator)
+    public static void Navigation (int Navigator, Human Spieler)
     {
-        ItemStats itemStats = new ItemStats();
-
         switch (Navigator)
         {
             case 2:
-                ShowShopList(itemStats.Stuff);
+                ShowShopList(Spieler);
                 break;
 
 
 
             default:
-                ShowNavigation();
+                ShowNavigation(Spieler);
                 break;
         }
     }
@@ -57,15 +54,14 @@ internal class Program
     // Shop anzeigen
     //----------------
 
-    public static void ShowShopList(Dictionary<string, IItem> Stuff)
+    public static void ShowShopList(Human Spieler)
     {
-        
+        ItemStats itemStats = new ItemStats();
         int counter = 1;
-        Human Spieler = new Human();
-        Console.WriteLine(Spieler.Gold); //Überprüfen weshalb Gold neu geschrieben wird.
+        Console.WriteLine(Spieler.Gold); 
         Dictionary<int, string> temp = new Dictionary<int, string>(); // Um Key zu storen mit der jeweilige zahl angabe um es später dem Inventar hinzuzufügen
 
-        foreach (var item in Stuff)
+        foreach (var item in itemStats.Stats)
         {
             
             Console.WriteLine($"{counter}: {item.Key}: \t Kosten: {item.Value.Cost} \t Schaden: {item.Value.Damage} \t Armor: {item.Value.Armor} \t Slot: {item.Value.Slot}");
@@ -79,30 +75,35 @@ internal class Program
         // Hierunter wird gecheckt ob genug Gold vorhanden ist.
 
 
-        int input = ShopAction(Convert.ToInt32(Console.ReadLine()), counter);
+        int input = ShopAction(Convert.ToInt32(Console.ReadLine()), counter, Spieler);
 
         if (input != 0)
         {
-            if (Spieler.Gold >= Stuff[temp[input]].Cost )
+            if (Spieler.Gold >= itemStats.Stats[temp[input]].Cost )
             {
                 Console.WriteLine("Du hast genug Gold");
-                Spieler.Gold -= Stuff[temp[input]].Cost;
+                Spieler.Gold -= itemStats.Stats[temp[input]].Cost;
                 Console.WriteLine(Spieler.Gold);
-                ShowNavigation();
+                Spieler.Inv.Add(temp[input]);
+                ShowNavigation(Spieler);
+            }
+            else 
+            { 
+                Console.WriteLine("Du hast nicht genug Gold!");
+                ShowShopList(Spieler);
             }
         }
-
     }
 
     //----------------
     // Shop Verlassen?
     //----------------
 
-    public static int ShopAction(int input, int counter)
+    public static int ShopAction(int input, int counter, Human Spieler)
     {
         if (input == counter)
         {
-            ShowNavigation();
+            ShowNavigation(Spieler);
             return 0;
         }
         else

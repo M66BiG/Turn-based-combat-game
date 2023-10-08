@@ -8,7 +8,7 @@ namespace Turn_based_combat_game
 {
     public class ItemStats
     {
-        public Dictionary<string, IItem> Stuff = new Dictionary<string, IItem>()
+        public Dictionary<string, IItem> Stats = new Dictionary<string, IItem>()
         {
             {"Kleinschwert",        new IItem{Cost = 10, Damage = 5, Armor = 0, Slot = "One Arm"} },
             {"Zweihand Schwert",    new IItem{Cost = 40, Damage = 20, Armor = 0, Slot = "Two Arm"} },
