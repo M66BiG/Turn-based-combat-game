@@ -25,6 +25,7 @@ internal class Program
         Console.WriteLine("1: zum Haus");
         Console.WriteLine("2: zum Shop");
         Console.WriteLine("3: zum Inventar");
+        Console.WriteLine("4: zum Kampf");
 
         Navigation(Convert.ToInt32(Console.ReadLine()),Spieler);
     }
@@ -37,8 +38,17 @@ internal class Program
     {
         switch (Navigator)
         {
+            case 1:
+                ShowHome(Spieler);
+                break;
             case 2:
                 ShowShopList(Spieler);
+                break;
+            case 3:
+                ShowInventoryList(Spieler);
+                break;
+            case 4:
+                ShowFight(Spieler);
                 break;
 
 
@@ -50,15 +60,15 @@ internal class Program
     }
 
 
-    //----------------
-    // Shop anzeigen
-    //----------------
+    //-------------------------------------------------------------------
+    // Shop Shop Shop Shop Shop Shop Shop Shop Shop Shop Shop Shop Shop 
+    //-------------------------------------------------------------------
 
     public static void ShowShopList(Human Spieler)
     {
         ItemStats itemStats = new ItemStats();
         int counter = 1;
-        Console.WriteLine(Spieler.Gold); 
+        Console.WriteLine($"Du hast: {Spieler.Gold} Gold"); 
         Dictionary<int, string> temp = new Dictionary<int, string>(); // Um Key zu storen mit der jeweilige zahl angabe um es später dem Inventar hinzuzufügen
 
         foreach (var item in itemStats.Stats)
@@ -81,11 +91,24 @@ internal class Program
         {
             if (Spieler.Gold >= itemStats.Stats[temp[input]].Cost )
             {
-                Console.WriteLine("Du hast genug Gold");
-                Spieler.Gold -= itemStats.Stats[temp[input]].Cost;
-                Console.WriteLine(Spieler.Gold);
-                Spieler.Inv.Add(temp[input]);
-                ShowNavigation(Spieler);
+                Console.WriteLine($"Du hast {Spieler.Gold} Gold.");
+                Console.WriteLine("Möchtest du das Item Kaufen?");
+                Console.WriteLine($"Es kostet {itemStats.Stats[temp[input]].Cost} Gold.");
+                Console.WriteLine("Y/N");
+                string answer = Console.ReadLine();
+                if (answer.ToUpper() == "Y")
+                {
+                    Spieler.Gold -= itemStats.Stats[temp[input]].Cost;
+                    Spieler.Inv.Add(temp[input]);
+                    Console.WriteLine("Du hast das Item erfolgreich gekauft.");
+                    ShowNavigation(Spieler);
+                }
+                else
+                {
+                    Console.WriteLine("Kehre zurück zum Shop.");
+                    ShowShopList(Spieler);
+                }
+                
             }
             else 
             { 
@@ -113,5 +136,31 @@ internal class Program
 
     }
 
+    //-------------------------------------------------------------------
+    // Inventar Inventar Inventar Inventar Inventar Inventar Inventar Inv
+    //-------------------------------------------------------------------
+    public static void ShowInventoryList(Human Spieler)
+    {
+
+    }
+
+
+    //-------------------------------------------------------------------
+    // Home Home Home Home Home Home Home Home Home Home Home Home Home 
+    //-------------------------------------------------------------------
+    public static void ShowHome(Human Spieler)
+    {
+
+    }
+
+
+    //-------------------------------------------------------------------
+    // Fight Fight Fight Fight Fight Fight Fight Fight Fight Fight Fight 
+    //-------------------------------------------------------------------
+
+    public static void ShowFight(Human Spieler)
+    {
+
+    }
 
 }
