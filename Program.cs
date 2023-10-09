@@ -88,8 +88,8 @@ internal class Program
         int input = ShopAction(Convert.ToInt32(Console.ReadLine()), counter, Spieler);
 
         if (input != 0)
-        {
-            if (Spieler.Gold >= itemStats.Stats[temp[input]].Cost )
+        {   // itemStats(Klasse) .Stats (Dictionary) [temp (Dictionary mit string speicher) [input]] (Nummer) .Cost (Kosten des Items)
+            if (Spieler.Gold >= itemStats.Stats[temp[input]].Cost ) 
             {
                 Console.WriteLine($"Du hast {Spieler.Gold} Gold.");
                 Console.WriteLine("Möchtest du das Item Kaufen?");
@@ -103,12 +103,18 @@ internal class Program
                     Console.WriteLine("Du hast das Item erfolgreich gekauft.");
                     ShowNavigation(Spieler);
                 }
-                else
+                else if (answer.ToUpper() == "N")
                 {
                     Console.WriteLine("Kehre zurück zum Shop.");
                     ShowShopList(Spieler);
                 }
-                
+                else
+                {
+                    Console.WriteLine("Unbekannte Eingabe.");
+                    Console.WriteLine("Kehre zurück zum Shop.");
+                    ShowShopList(Spieler);
+                }
+
             }
             else 
             { 
