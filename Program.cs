@@ -206,6 +206,10 @@ internal class Program
             {
                 Console.WriteLine("Welches Item?");
                 int input = Convert.ToInt32(Console.ReadLine());
+
+                ItemStats itemStats = new ItemStats();
+                // Add logic slots
+
                 Spieler.Equipt.Add(temp[input]);
                 Spieler.Inv.Remove(temp[input]);
 
@@ -248,6 +252,10 @@ internal class Program
             {
                 Console.WriteLine("Welches Item?");
                 int input = Convert.ToInt32(Console.ReadLine());
+
+                ItemStats itemStats = new ItemStats();
+                // Add logic slots
+
                 Spieler.Equipt.Remove(temp[input]);
                 Spieler.Inv.Add(temp[input]);
 

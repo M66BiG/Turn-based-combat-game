@@ -15,7 +15,7 @@ namespace Turn_based_combat_game
         public bool ArmorSlot { get; set; } = false;
         public bool Hand1Slot { get; set; } = false;
         public bool Hand2Slot { get; set; } = false;
-        public List<string> Inv { get; set; } = new List<string>(); //Doppelinitialisierung?
+        public List<string> Inv { get; set; } = new List<string>();
         public List<string> Equipt { get; set; } = new List<string>();
 
     }
