@@ -11,9 +11,7 @@ internal class Program
     private static void Main(string[] args)
     {
         Human Spieler = new Human();
-        // Inventory SpielerInventar = new Inventory();
         ShowNavigation(Spieler);
-
     }
 
     //----------------
@@ -22,6 +20,7 @@ internal class Program
 
     public static void ShowNavigation(Human Spieler)
     {
+        Console.WriteLine();
         Console.WriteLine("Du befindest dich im Hauptmenü");
         Console.WriteLine("1: zum Hotel");
         Console.WriteLine("2: zum Shop");
@@ -29,7 +28,20 @@ internal class Program
         Console.WriteLine("4: zu deinen Ausgerüsteten Gegenständen");
         Console.WriteLine("5: zum Kampf");
 
-        Navigation(Convert.ToInt32(Console.ReadLine()),Spieler);
+        string input = Console.ReadLine();
+        Console.WriteLine();
+
+        if (int.TryParse(input, out int result))
+        {
+            
+        }
+        else
+        {
+            Console.WriteLine("Unbekanntes Zeichen. Versuche es nocheinmal");
+            ShowNavigation(Spieler);
+        }
+
+        Navigation(result, Spieler);
     }
 
     //--------------------------------
@@ -68,8 +80,8 @@ internal class Program
     {
         Console.WriteLine("Du bist jetzt in einem Hotel. Möchtest du ein Zimmer buchen? Kostet 10 Gold die Nacht.");
         Console.WriteLine("Y/N");
-
         string answer = Console.ReadLine();
+
         if (answer.ToUpper() == "Y")
         {
             Spieler.Gold -= 10;
@@ -86,9 +98,6 @@ internal class Program
                 Spieler.Hp = Spieler.Hp + (100 - Spieler.Hp);
                 Console.WriteLine($"Du hast jetzt {Spieler.Hp} HP");
             }
-
-
-
         }
         else if (answer.ToUpper() != "N")
         {
@@ -114,14 +123,9 @@ internal class Program
             Console.WriteLine($"{counter}: {item.Key}: \t Kosten: {item.Value.Cost} \t Schaden: {item.Value.Damage} \t Armor: {item.Value.Armor} \t Slot: {item.Value.Slot}");
             temp.Add(counter++, item.Key);
         }
-
-        
         Console.WriteLine($"{counter}: Verlassen");
 
-
         // Hierdrunter wird gecheckt ob genug Gold vorhanden ist.
-
-
         int input = ShopAction(Convert.ToInt32(Console.ReadLine()), counter, Spieler);
 
         if (input != 0)
@@ -182,10 +186,11 @@ internal class Program
     //-------------------------------------------------------------------
     // Inventar Inventar Inventar Inventar Inventar Inventar Inventar Inv
     //-------------------------------------------------------------------
+
     public static void ShowInventoryList(Human Spieler)
     {
         Console.WriteLine("Du schaust in dein Inventar.");
-
+        bool equip = true; //Zum weitergeben für die Logik ob an oder ausgezogen wird
 
         if (Spieler.Inv.Count != 0)
         {
@@ -206,14 +211,7 @@ internal class Program
             {
                 Console.WriteLine("Welches Item?");
                 int input = Convert.ToInt32(Console.ReadLine());
-
-                ItemStats itemStats = new ItemStats();
-                // Add logic slots
-
-                Spieler.Equipt.Add(temp[input]);
-                Spieler.Inv.Remove(temp[input]);
-
-                Console.WriteLine($"Du hast das Item: {temp[input]} erfolgreich angezogen.");
+                CheckSlotEquip(temp, input, equip, Spieler);
             }
             else if (answer.ToUpper() != "N")
             {
@@ -231,13 +229,17 @@ internal class Program
     //-------------------------------------------------------------------
     // Ausrüstung Ausrüstung Ausrüstung Ausrüstung Ausrüstung Ausrüstung 
     //-------------------------------------------------------------------
+
     public static void ShowEquiptList(Human Spieler)
     {
+        bool equip = false; //Zum weitergeben für die Logik ob an oder ausgezogen wird
         if (Spieler.Equipt.Count != 0)
         {
             Dictionary<int, string> temp = new Dictionary<int, string>();
             int counter = 1;
 
+
+            // zwischenspeicher um die Keys zu prüfen
             foreach (string item in Spieler.Equipt)
             {
                 Console.WriteLine($"{counter}: {item}");
@@ -252,14 +254,7 @@ internal class Program
             {
                 Console.WriteLine("Welches Item?");
                 int input = Convert.ToInt32(Console.ReadLine());
-
-                ItemStats itemStats = new ItemStats();
-                // Add logic slots
-
-                Spieler.Equipt.Remove(temp[input]);
-                Spieler.Inv.Add(temp[input]);
-
-                Console.WriteLine($"Du hast das Item: {temp[input]} erfolgreich ausgezogen.");
+                CheckSlotEquip(temp, input, equip, Spieler); // Um logic anzufragen
             }
             else if (answer.ToUpper() != "N")
             {
@@ -273,6 +268,87 @@ internal class Program
         Console.WriteLine("Kehre zurück zum Hauptmenü.");
         ShowNavigation(Spieler);
     }
+
+    //-------------------------------------------------------------------
+    // Ausrüstung Logic Ausrüstung Logic Ausrüstung Logic Ausrüstung Logi
+    //-------------------------------------------------------------------
+
+    public static void CheckSlotEquip(Dictionary<int, string> temp, int input, bool equip, Human Spieler)
+    {
+        ItemStats itemStats = new ItemStats(); // Laden der Itemstats
+        if (equip)
+        {
+            if (itemStats.Stats[temp[input]].Slot == "One Arm" && Spieler.Hand1Slot == false)
+            {
+                Spieler.Hand1Slot = true;
+            }
+            else if (itemStats.Stats[temp[input]].Slot == "Two Arm" && Spieler.Hand1Slot == false && Spieler.Hand2Slot == false)
+            {
+                Spieler.Hand1Slot = true;
+                Spieler.Hand2Slot = true;
+            }
+            else if (itemStats.Stats[temp[input]].Slot == "Secondary Arm" && Spieler.Hand2Slot == false)
+            {
+                Spieler.Hand2Slot = true;
+            }
+            else if (itemStats.Stats[temp[input]].Slot == "Head" && Spieler.HeadSlot == false)
+            {
+                Spieler.HeadSlot = true;
+            }
+            else if (itemStats.Stats[temp[input]].Slot == "Armor" && Spieler.ArmorSlot == false)
+            {
+                Spieler.ArmorSlot = true;
+            }
+            else
+            {
+                Console.WriteLine("Deine Ausrüstungsslots sind Voll.");
+                Console.WriteLine("Kehre zurück zum Hauptmenü.");
+                ShowNavigation(Spieler);
+            }
+            Spieler.Equipt.Add(temp[input]);
+            Spieler.Inv.Remove(temp[input]);
+            Console.WriteLine($"Du hast das Item: {temp[input]} erfolgreich angezogen.");
+            Console.WriteLine("Kehre zurück zum Hauptmenü.");
+            ShowNavigation(Spieler);
+        }
+        else 
+        {
+            if (itemStats.Stats[temp[input]].Slot == "One Arm" && Spieler.Hand1Slot == true)
+            {
+                Spieler.Hand1Slot = false;
+            }
+            else if (itemStats.Stats[temp[input]].Slot == "Two Arm" && Spieler.Hand1Slot == true && Spieler.Hand2Slot == true)
+            {
+                Spieler.Hand1Slot = false;
+                Spieler.Hand2Slot = false;
+            }
+            else if (itemStats.Stats[temp[input]].Slot == "Secondary Arm" && Spieler.Hand2Slot == true)
+            {
+                Spieler.Hand2Slot = false;
+            }
+            else if (itemStats.Stats[temp[input]].Slot == "Head" && Spieler.HeadSlot == true)
+            {
+                Spieler.HeadSlot = false;
+            }
+            else if (itemStats.Stats[temp[input]].Slot == "Armor" && Spieler.ArmorSlot == true)
+            {
+                Spieler.ArmorSlot = false;
+            }
+            else
+            {
+                Console.WriteLine("?!??!?!?!??!?!??");
+                Console.WriteLine("Kehre zurück zum Hauptmenü.");
+                ShowNavigation(Spieler);
+            }
+            Spieler.Equipt.Remove(temp[input]);
+            Spieler.Inv.Add(temp[input]);
+            Console.WriteLine($"Du hast das Item: {temp[input]} erfolgreich ausgezogen.");
+            Console.WriteLine("Kehre zurück zum Hauptmenü.");
+            ShowNavigation(Spieler);
+        }
+    }
+
+
     //-------------------------------------------------------------------
     // Fight Fight Fight Fight Fight Fight Fight Fight Fight Fight Fight 
     //-------------------------------------------------------------------
