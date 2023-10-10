@@ -26,7 +26,8 @@ internal class Program
         Console.WriteLine("1: zum Hotel");
         Console.WriteLine("2: zum Shop");
         Console.WriteLine("3: zum Inventar");
-        Console.WriteLine("4: zum Kampf");
+        Console.WriteLine("4: zu deinen Ausgerüsteten Gegenständen");
+        Console.WriteLine("5: zum Kampf");
 
         Navigation(Convert.ToInt32(Console.ReadLine()),Spieler);
     }
@@ -49,6 +50,9 @@ internal class Program
                 ShowInventoryList(Spieler);
                 break;
             case 4:
+                ShowEquiptList(Spieler);
+                break;
+            case 5:
                 ShowFight(Spieler);
                 break;
             default:
@@ -187,13 +191,17 @@ internal class Program
         {
             Dictionary<int, string> temp = new Dictionary<int, string>();
             int counter = 1;
+
             foreach (string item in Spieler.Inv)
             {
                 Console.WriteLine($"{counter}: {item}");
                 temp.Add(counter++, item);
             }
+
             Console.WriteLine("Möchtest du etwas anziehen?");
+            Console.WriteLine("Y/N");
             string answer = Console.ReadLine();
+
             if (answer.ToUpper() == "Y")
             {
                 Console.WriteLine("Welches Item?");
@@ -201,27 +209,62 @@ internal class Program
                 Spieler.Equipt.Add(temp[input]);
                 Spieler.Inv.Remove(temp[input]);
 
-                Console.WriteLine($"Du hast {temp[input]} angezogen.");
+                Console.WriteLine($"Du hast das Item: {temp[input]} erfolgreich angezogen.");
             }
-            else if (answer.ToUpper() == "N")
+            else if (answer.ToUpper() != "N")
             {
-
-            }
-            else
-            {
-
+                Console.WriteLine("Unbekannte Eingabe.");
             }
         }
         else
         {
             Console.WriteLine("Du hast keine Items.");
-            Console.WriteLine("Kehre zurück zum Hauptmenü.");
-
-
         }
+        Console.WriteLine("Kehre zurück zum Hauptmenü.");
         ShowNavigation(Spieler);
     }
 
+    //-------------------------------------------------------------------
+    // Ausrüstung Ausrüstung Ausrüstung Ausrüstung Ausrüstung Ausrüstung 
+    //-------------------------------------------------------------------
+    public static void ShowEquiptList(Human Spieler)
+    {
+        if (Spieler.Equipt.Count != 0)
+        {
+            Dictionary<int, string> temp = new Dictionary<int, string>();
+            int counter = 1;
+
+            foreach (string item in Spieler.Equipt)
+            {
+                Console.WriteLine($"{counter}: {item}");
+                temp.Add(counter++, item);
+            }
+
+            Console.WriteLine("Möchtest du etwas ausziehen?");
+            Console.WriteLine("Y/N");
+            string answer = Console.ReadLine();
+
+            if (answer.ToUpper() == "Y")
+            {
+                Console.WriteLine("Welches Item?");
+                int input = Convert.ToInt32(Console.ReadLine());
+                Spieler.Equipt.Remove(temp[input]);
+                Spieler.Inv.Add(temp[input]);
+
+                Console.WriteLine($"Du hast das Item: {temp[input]} erfolgreich ausgezogen.");
+            }
+            else if (answer.ToUpper() != "N")
+            {
+                Console.WriteLine("Unbekannte Eingabe.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Du hast keine Items ausgerüstet.");
+        }
+        Console.WriteLine("Kehre zurück zum Hauptmenü.");
+        ShowNavigation(Spieler);
+    }
     //-------------------------------------------------------------------
     // Fight Fight Fight Fight Fight Fight Fight Fight Fight Fight Fight 
     //-------------------------------------------------------------------
