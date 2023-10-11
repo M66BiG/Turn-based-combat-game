@@ -11,9 +11,9 @@ namespace Turn_based_combat_game
         public Dictionary<string, IItem> Stats = new Dictionary<string, IItem>()
         {
             {"Kleinschwert",        new IItem{Cost = 10, Damage = 5, Armor = 0, Slot = "One Arm"} },
-            {"Zweihand Schwert",    new IItem{Cost = 40, Damage = 20, Armor = 0, Slot = "Two Arm"} },
+            {"Zweihand Schwert",    new IItem{Cost = 40, Damage = 25, Armor = 0, Slot = "Two Arm"} },
 
-            {"Einhand Schild",      new IItem{Cost = 10, Damage = 0, Armor = 10, Slot = "Secondary Arm"} },
+            {"Einhand Schild",      new IItem{Cost = 10, Damage = 2, Armor = 10, Slot = "Secondary Arm"} },
        
 
         

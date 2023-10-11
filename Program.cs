@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Metrics;
+using System.Reflection.PortableExecutable;
 using Turn_based_combat_game;
 
 internal class Program
@@ -33,7 +34,7 @@ internal class Program
 
         if (int.TryParse(input, out int result))
         {
-            
+
         }
         else
         {
@@ -48,7 +49,7 @@ internal class Program
     // Navigations Aktionen
     //--------------------------------
 
-    public static void Navigation (int Navigator, Human Spieler)
+    public static void Navigation(int Navigator, Human Spieler)
     {
         switch (Navigator)
         {
@@ -114,12 +115,12 @@ internal class Program
     {
         ItemStats itemStats = new ItemStats();
         int counter = 1;
-        Console.WriteLine($"Du hast: {Spieler.Gold} Gold"); 
+        Console.WriteLine($"Du hast: {Spieler.Gold} Gold");
         Dictionary<int, string> temp = new Dictionary<int, string>(); // Um Key zu storen mit der jeweilige zahl angabe um es später dem Inventar hinzuzufügen
 
         foreach (var item in itemStats.Stats)
         {
-            
+
             Console.WriteLine($"{counter}: {item.Key}: \t Kosten: {item.Value.Cost} \t Schaden: {item.Value.Damage} \t Armor: {item.Value.Armor} \t Slot: {item.Value.Slot}");
             temp.Add(counter++, item.Key);
         }
@@ -130,7 +131,7 @@ internal class Program
 
         if (input != 0)
         {   // itemStats(Klasse) .Stats (Dictionary) [temp (Dictionary mit string speicher) [input]] (Nummer (key)) .Cost (Kosten des Items)
-            if (Spieler.Gold >= itemStats.Stats[temp[input]].Cost ) 
+            if (Spieler.Gold >= itemStats.Stats[temp[input]].Cost)
             {
                 Console.WriteLine($"Du hast {Spieler.Gold} Gold.");
                 Console.WriteLine("Möchtest du das Item Kaufen?");
@@ -157,8 +158,8 @@ internal class Program
                 }
 
             }
-            else 
-            { 
+            else
+            {
                 Console.WriteLine("Du hast nicht genug Gold!");
                 ShowShopList(Spieler);
             }
@@ -311,7 +312,7 @@ internal class Program
             Console.WriteLine("Kehre zurück zum Hauptmenü.");
             ShowNavigation(Spieler);
         }
-        else 
+        else
         {
             if (itemStats.Stats[temp[input]].Slot == "One Arm" && Spieler.Hand1Slot == true)
             {
@@ -355,7 +356,144 @@ internal class Program
 
     public static void ShowFight(Human Spieler)
     {
+        Random random = new Random();
+        Character NPC = new Character();
+        string[] names = { "Beeck", "Meiderich", "Hamborn", "Marxloh", "Baerl" };
 
+        NPC.Hp = random.Next(100, 121);
+        NPC.Damage = random.Next(40, 56);
+        NPC.Armor = random.Next(15, 26);
+        NPC.Name = names[random.Next(names.Length)];
+
+
+        Console.WriteLine($"Du kämpfst gegen ein starken Typen der sich {NPC.Name} nennt");
+
+        Console.WriteLine("Ihr würfelt die Reihenfolge.");
+
+        while (NPC.Hp >= 0 && Spieler.Hp >= 0)
+        {
+            Spieler.Dice = random.Next(2, 13);
+            NPC.Dice = random.Next(2, 13);
+            Console.WriteLine($"Du hast {Spieler.Hp} HP                     Dein Gegner hat {NPC.Hp} HP");
+
+            Console.WriteLine();
+
+            
+            Console.WriteLine($"Du hast {Spieler.Dice} gewürfelt.           Dein Gegner hat {NPC.Dice} gewürfelt");
+
+            Console.WriteLine();
+            if (Spieler.Dice > NPC.Dice)
+            {
+                Console.WriteLine("Somit fängst du an.");
+                Console.WriteLine();
+
+                if (NPC.Armor >= CalculateDamage(Spieler))
+                {
+                    Console.WriteLine("Du konntest dem Gegner keinen Schaden hinzufügen. Er hat zu viel Rüstung");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    NPC.Hp -= CalculateDamage(Spieler) - NPC.Armor;
+                    Console.WriteLine($"Du hast {CalculateDamage(Spieler)} HP Schaden hinzugefügt.");
+                    Console.WriteLine($"Somit hat er nur noch {NPC.Hp} HP");
+                }
+
+                if(NPC.Hp <= 0)
+                {
+                    Console.WriteLine("Dein Gegner ist verstorben...");
+                    break;
+                }
+
+                if (CalculateArmor(Spieler) >= NPC.Damage)
+                {
+                    Console.WriteLine("Der Gegner konnte dir keinen Schaden hinzufügen. Du hast zu viel Rüstung");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    Spieler.Hp -= NPC.Damage - CalculateArmor(Spieler);
+                    Console.WriteLine($"Der Gegner hat dir {NPC.Damage} HP Schaden hinzugefügt.");
+                    Console.WriteLine($"Somit hast du nur noch {Spieler.Hp} HP");
+                    Console.WriteLine();
+                }
+
+            }
+            //------------------------------------------------------------------------------------
+            else
+            {
+                Console.WriteLine("Somit fäng dein Gegner an.");
+                if (CalculateArmor(Spieler) >= NPC.Damage)
+                {
+                    Console.WriteLine("Der Gegner konnte dir keinen Schaden hinzufügen. Du hast zu viel Rüstung");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    Spieler.Hp -= NPC.Damage - CalculateArmor(Spieler);
+                    Console.WriteLine($"Der Gegner hat dir {NPC.Damage} HP Schaden hinzugefügt.");
+                    Console.WriteLine($"Somit hast du nur noch {Spieler.Hp} HP");
+                    Console.WriteLine();
+                }
+
+                if (Spieler.Hp <= 0)
+                {
+                    Console.WriteLine("Du bist verstorben...");
+                    break;
+                }
+
+                if (NPC.Armor >= CalculateDamage(Spieler))
+                {
+                    Console.WriteLine("Du konntest dem Gegner keinen Schaden hinzufügen. Er hat zu viel Rüstung");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    NPC.Hp -= CalculateDamage(Spieler) - NPC.Armor;
+                    Console.WriteLine($"Du hast {CalculateDamage(Spieler)} HP Schaden hinzugefügt.");
+                    Console.WriteLine($"Somit hat er nur noch {NPC.Hp} HP");
+                    Console.WriteLine();
+                }
+            }
+            Console.WriteLine(); 
+            Console.WriteLine();
+            
+        }
+
+        if (Spieler.Hp <= 0)
+        {
+            Console.WriteLine("Du hast Verloren... Das Spiel ist hiermit zuende...");
+            Console.WriteLine();
+            Console.WriteLine($"Dein Gegner hatte nurnoch {NPC.Hp} HP");
+            Environment.Exit(0);
+        }
+        else
+        {
+            Console.WriteLine("Du hast GEWONNEN!!! Geh zurück zum Hauptmenü.");
+            ShowNavigation(Spieler);
+        }
     }
 
+    public static int CalculateDamage(Human Spieler)
+    {
+        ItemStats itemStats = new ItemStats();
+        int result = 0;
+
+        foreach (string s in Spieler.Equipt)
+        {
+            result += itemStats.Stats[s].Damage;
+        }
+        return result;
+    }
+    public static int CalculateArmor(Human Spieler)
+    {
+        ItemStats itemStats = new ItemStats();
+        int result = 0;
+
+        foreach (string s in Spieler.Equipt)
+        {
+            result += itemStats.Stats[s].Armor;
+        }
+        return result;
+    }
 }
