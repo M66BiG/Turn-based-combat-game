@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TurnBasedCombat.Game", "TurnBasedCombat.Game\TurnBasedCombat.Game.csproj", "{EAAA3A85-CDA2-4893-BD69-244C11B75F2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurnBasedCombat.Shared", "..\TurnBasedCombat.Shared\TurnBasedCombat.Shared.csproj", "{F990A4AB-DB0B-4DC2-8EDF-EFC41259E33C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TurnBasedCombat.Shared", "TurnBasedCombat.Shared\TurnBasedCombat.Shared.csproj", "{0DE0C704-C10F-463C-BEB7-A6A211F45CA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{EAAA3A85-CDA2-4893-BD69-244C11B75F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAAA3A85-CDA2-4893-BD69-244C11B75F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAAA3A85-CDA2-4893-BD69-244C11B75F2B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F990A4AB-DB0B-4DC2-8EDF-EFC41259E33C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F990A4AB-DB0B-4DC2-8EDF-EFC41259E33C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F990A4AB-DB0B-4DC2-8EDF-EFC41259E33C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F990A4AB-DB0B-4DC2-8EDF-EFC41259E33C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DE0C704-C10F-463C-BEB7-A6A211F45CA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DE0C704-C10F-463C-BEB7-A6A211F45CA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DE0C704-C10F-463C-BEB7-A6A211F45CA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DE0C704-C10F-463C-BEB7-A6A211F45CA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
